@@ -7,8 +7,9 @@ const myLogFileStream = fs.createWriteStream('/var/log/app.log');
 const myConsole = new console.Console(myLogFileStream, myLogFileStream);
 
 // Constants
-const serverHost = '127.0.0.1';
-const serverPort = 80;
+const settings = require('/settings/settings.json');
+const serverHost = settings.host;
+const serverPort = settings.port;
 
 // Express app
 const app = express();
