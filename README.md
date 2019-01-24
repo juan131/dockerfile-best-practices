@@ -1,48 +1,48 @@
 # Best Practices writing a Dockerfile
 
-This repository is a guide with a set of good practices when writting Dockerfiles.
+Avoid packaging dependencies you don't need
 
-Using a **Node.js** application as example, this guide will be a journey from a very basic Dockerfile to make it production ready, describing some of the best practices and common pitfalls that you are likely to encounter when developing Dockerfiles.
+### Main changes
 
-## Before we start...
+Remove debugging tools and add the flag `--no-install-recommends`:
 
-On [this blog post]() you'll find detailed information about each of the steps we'll do to improve the Dockerfile. Please use it to follow this tutorial.
-
-### Enable BuilKit
-
-Use [BuildKit](https://github.com/moby/buildkit) to build your Docker images. It can be enabled on two different ways:
-
-- Exporting the `DOCKER_BUILDKIT` environment variable:
-
-```bash
-$ export DOCKER_BUILDKIT=1
+```diff
+...
+RUN apt-get update
+- RUN apt-get -y install curl software-properties-common gnupg vim ssh
++ RUN apt-get -y install --no-install-recommends curl software-properties-common gnupg
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
+- RUN apt-get -y install nodejs
++ RUN apt-get -y install --no-install-recommends nodejs
+# Install NPM dependencies
+...
 ```
 
-> TIP: add it to your ~/.bashrc file
+Join update/install system packages on a single build step:
 
-- [Configuring the Docker Daemon](https://docs.docker.com/config/daemon/#configure-the-docker-daemon) to add the **Buildkit** feature:
-
-```json
-{
-  "features": {
-    "buildkit": true
-  }
-}
+```diff
+...
+- RUN apt-get update
+- RUN apt-get install -y curl software-properties-common gnupg
++ RUN apt-get update && apt-get -y install --no-install-recommends curl software-properties-common gnupg
+- RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
+- RUN apt-get -y install --no-install-recommends nodejs
++ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && apt-get -y install --no-install-recommends nodejs
+# Install NPM dependencies
+...
 ```
 
-## How to use this tutorial
+Remove the package manager cache:
 
-Starting from the 'master' branch, you'll find a branch with the files to use on each step of the tutorial.
+```diff
+...
+RUN apt-get update && apt-get -y install --no-install-recommends curl software-properties-common gnupg
+- RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && apt-get -y install --no-install-recommends nodejs
++ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && apt-get -y install --no-install-recommends nodejs && rm -rf /var/lib/apt/lists/*
+# Install NPM dependencies
+...
+```
 
-It's only necessary to switch (checkout) to the proper branch. The available branches are:
+### Next step
 
-- [1-cache-improvements](https://github.com/juan131/dockerfile-best-practices/tree/1-cache-improvements)
-- [2-unused-dependencies](https://github.com/juan131/dockerfile-best-practices/tree/2-unused-dependencies)
 - [3-minideb](https://github.com/juan131/dockerfile-best-practices/tree/3-minideb)
-- [4-maintained-images](https://github.com/juan131/dockerfile-best-practices/tree/4-maintained-images)
-- [5-multi-stage](https://github.com/juan131/dockerfile-best-practices/tree/5-multi-stage)
-- [6-non-root](https://github.com/juan131/dockerfile-best-practices/tree/6-non-root)
-- [7-workdir](https://github.com/juan131/dockerfile-best-practices/tree/7-workdir)
-- [8-mounted-configuration](https://github.com/juan131/dockerfile-best-practices/tree/8-mounted-configuration)
-- [9-logs](https://github.com/juan131/dockerfile-best-practices/tree/9-logs)
-- [10-entrypoint](https://github.com/juan131/dockerfile-best-practices/tree/10-entrypoint)
