@@ -19,7 +19,7 @@ Adapt the container to use alternative port such as `8080`:
 
 - Dockerfile:
 
-```dif
+```diff
 ...
 COPY --from=builder /tiller-proxy /proxy
 - EXPOSE 80
@@ -40,7 +40,7 @@ const serverHost = '127.0.0.1';
 
 Give permissions to the `nonroot` user in the `/var/log/` directory:
 
-```dif
+```diff
 ...
 RUN groupadd -r -g 1001 nonroot && useradd -r -u 1001 -g nonroot nonroot- EXPOSE 80
 + RUN chmod -R g+rwX /var/log && chown -R root:nonroot /var/log
