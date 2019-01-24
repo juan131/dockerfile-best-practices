@@ -24,8 +24,8 @@ $ export DOCKER_BUILDKIT=1
 
 ```json
 {
-  “features”: {
-    “buildkit”: true
+  "features": {
+    "buildkit": true
   }
 }
 ```
@@ -36,13 +36,13 @@ Starting from the 'master' branch, you'll find a branch with the files to use on
 
 It's only necessary to switch (checkout) to the proper branch. The available branches are:
 
-- [1-cache-improvements](https://github.com/juan131/dockerfile-best-practices/blob/1-cache-improvements)
-- [2-unused-dependencies](https://github.com/juan131/dockerfile-best-practices/blob/2-unused-dependencies)
-- [3-minideb](https://github.com/juan131/dockerfile-best-practices/blob/3-minideb)
-- [4-maintained-images](https://github.com/juan131/dockerfile-best-practices/blob/4-maintained-images)
-- [5-multi-stage](https://github.com/juan131/dockerfile-best-practices/blob/5-multi-stage)
-- [6-non-root](https://github.com/juan131/dockerfile-best-practices/blob/6-non-root)
-- [7-workdir](https://github.com/juan131/dockerfile-best-practices/blob/7-workdir)
-- [8-mounted-configuration](https://github.com/juan131/dockerfile-best-practices/blob/8-mounted-configuration)
-- [9-logs](https://github.com/juan131/dockerfile-best-practices/blob/9-logs)
-- [10-entrypoint](https://github.com/juan131/dockerfile-best-practices/blob/10-entrypoint)
+- [1-cache-improvements](https://github.com/juan131/dockerfile-best-practices/tree/1-cache-improvements)
+- [2-unused-dependencies](https://github.com/juan131/dockerfile-best-practices/tree/2-unused-dependencies)
+- [3-minideb](https://github.com/juan131/dockerfile-best-practices/tree/3-minideb)
+- [4-maintained-images](https://github.com/juan131/dockerfile-best-practices/tree/4-maintained-images)
+- [5-multi-stage](https://github.com/juan131/dockerfile-best-practices/tree/5-multi-stage)
+- [6-non-root](https://github.com/juan131/dockerfile-best-practices/tree/6-non-root)
+- [7-workdir](https://github.com/juan131/dockerfile-best-practices/tree/7-workdir)
+- [8-mounted-configuration](https://github.com/juan131/dockerfile-best-practices/tree/8-mounted-configuration)
+- [9-logs](https://github.com/juan131/dockerfile-best-practices/tree/9-logs)
+- [10-entrypoint](https://github.com/juan131/dockerfile-best-practices/tree/10-entrypoint)
