@@ -30,6 +30,16 @@ $ export DOCKER_BUILDKIT=1
 }
 ```
 
+### Install a Linter for Dockerfiles on your IDE
+
+A Linter helps you to detect syntax errors on your Dockerfiles and provides you suggestions based on common practices. 
+
+There are plugins that provide these functionalities for almost every IDE. Here you have some suggestions:
+
+- Atom: [linter-docker](https://github.com/AtomLinter/linter-docker)
+- Eclipse: [Docker Editor](https://marketplace.eclipse.org/content/docker-editor)
+- Visual Studio: [Docker Linter](https://marketplace.visualstudio.com/items?itemName=henriiik.docker-linter)
+
 ## How to use this tutorial
 
 Starting from the 'master' branch, you'll find a branch with the files to use on each step of the tutorial.
