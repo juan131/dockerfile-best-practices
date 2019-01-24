@@ -1,0 +1,16 @@
+{
+  "name": "express_example",
+  "version": "1.0.0",
+  "description": "Express App Example",
+  "author": "Juan Ariza <juan@bitnami.com>",
+  "main": "server.js",
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
