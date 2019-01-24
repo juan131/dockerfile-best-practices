@@ -8,7 +8,7 @@ const myConsole = new console.Console(myLogFileStream, myLogFileStream);
 
 // Constants
 const serverHost = '127.0.0.1';
-const serverPort = 80;
+const serverPort = 8080;
 
 // Express app
 const app = express();
