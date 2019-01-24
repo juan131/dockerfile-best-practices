@@ -1,11 +1,6 @@
-FROM debian
+FROM bitnami/node:10-prod
 # Copy application files
-COPY . /app
-# Install required system packages
-RUN apt-get update
-RUN apt-get -y install curl software-properties-common gnupg vim ssh
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
-RUN apt-get -y install nodejs
+COPY package.json server.js /app
 # Install NPM dependencies
 RUN npm install --prefix /app
 EXPOSE 80
