@@ -10,7 +10,7 @@ Redirect the apps' logs to stdout:
 ...
 VOLUME /settings
 + RUN ln -sf /dev/stdout /var/log/app.log
-RUN groupadd -r -g 1001 nonroot && useradd -r -u 1001 -g nonroot nonroot
+RUN useradd -r -u 1001 -g root nonroot
 ...
 ```
 
