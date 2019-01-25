@@ -34,7 +34,7 @@ Add the mount point to the Dockerfile:
 ...
 EXPOSE 8080
 + VOLUME /settings
-RUN groupadd -r -g 1001 nonroot && useradd -r -u 1001 -g nonroot nonroot
+RUN useradd -r -u 1001 -g root nonroot
 ...
 ```
 
