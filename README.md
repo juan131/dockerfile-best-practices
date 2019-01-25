@@ -9,7 +9,7 @@ Change the default user from `root` to `nonroot`:
 ```diff
 ...
 EXPOSE 80
-+ RUN groupadd -r -g 1001 nonroot && useradd -r -u 1001 -g nonroot nonroot
++ RUN useradd -r -u 1001 -g root nonroot
 + USER nonroot
 CMD ["node", "/app/server.js"]
 ...
@@ -42,8 +42,8 @@ Give permissions to the `nonroot` user in the `/var/log/` directory:
 
 ```diff
 ...
-RUN groupadd -r -g 1001 nonroot && useradd -r -u 1001 -g nonroot nonroot- EXPOSE 80
-+ RUN chmod -R g+rwX /var/log && chown -R root:nonroot /var/log
+RUN useradd -r -u 1001 -g root nonroot
++ RUN chmod -R g+rwX /var/log
 USER nonroot
 ...
 ```
