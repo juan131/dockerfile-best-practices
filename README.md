@@ -10,7 +10,7 @@ Use the `bitnami/node` image as base image:
 - FROM bitnami/minideb
 + FROM bitnami/node:10-prod
 - # Install required system packages
-- RUN install_packages curl software-properties-common gnupg
+- RUN install_packages imagemagick curl software-properties-common gnupg
 - RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && install_packages nodejs
 # Copy application files
 ...
