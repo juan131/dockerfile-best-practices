@@ -18,8 +18,8 @@ Replace the `apt-get` instructions with `install_packages`:
 ```diff
 ...
 # Install required system packages
-- RUN apt-get update && apt-get -y install --no-install-recommends curl software-properties-common gnupg
-+ RUN install_packages curl software-properties-common gnupg
+- RUN apt-get update && apt-get -y install --no-install-recommends imagemagick curl software-properties-common gnupg
++ RUN install_packages imagemagick curl software-properties-common gnupg
 - RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && apt-get -y install --no-install-recommends nodejs && rm -rf /var/lib/apt/lists/*
 + RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && install_packages nodejs
 # Copy application files
