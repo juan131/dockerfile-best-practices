@@ -9,8 +9,8 @@ Remove debugging tools and add the flag `--no-install-recommends`:
 ```diff
 ...
 RUN apt-get update
-- RUN apt-get -y install curl software-properties-common gnupg vim ssh
-+ RUN apt-get -y install --no-install-recommends curl software-properties-common gnupg
+- RUN apt-get -y install imagemagick curl software-properties-common gnupg vim ssh
++ RUN apt-get -y install --no-install-recommends imagemagick curl software-properties-common gnupg
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
 - RUN apt-get -y install nodejs
 + RUN apt-get -y install --no-install-recommends nodejs
@@ -23,8 +23,8 @@ Join update/install system packages on a single build step:
 ```diff
 ...
 - RUN apt-get update
-- RUN apt-get install -y curl software-properties-common gnupg
-+ RUN apt-get update && apt-get -y install --no-install-recommends curl software-properties-common gnupg
+- RUN apt-get install -y imagemagick curl software-properties-common gnupg
++ RUN apt-get update && apt-get -y install --no-install-recommends imagemagick curl software-properties-common gnupg
 - RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
 - RUN apt-get -y install --no-install-recommends nodejs
 + RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && apt-get -y install --no-install-recommends nodejs
@@ -36,7 +36,7 @@ Remove the package manager cache:
 
 ```diff
 ...
-RUN apt-get update && apt-get -y install --no-install-recommends curl software-properties-common gnupg
+RUN apt-get update && apt-get -y install --no-install-recommends imagemagick curl software-properties-common gnupg
 - RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && apt-get -y install --no-install-recommends nodejs
 + RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && apt-get -y install --no-install-recommends nodejs && rm -rf /var/lib/apt/lists/*
 # Install NPM dependencies
