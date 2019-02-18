@@ -6,7 +6,7 @@ Using a **Node.js** application as example, this guide will be a journey from a 
 
 ## Before we start...
 
-On [this blog post]() you'll find detailed information about each of the steps we'll do to improve the Dockerfile. Please use it to follow this tutorial.
+On [this blog post](https://engineering.bitnami.com/articles/best-practices-writing-a-dockerfile.html) you'll find detailed information about each of the steps we'll do to improve the Dockerfile. Please use it to follow this tutorial.
 
 ### Enable BuilKit
 
