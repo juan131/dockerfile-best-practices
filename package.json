@@ -2,7 +2,7 @@
   "name": "express_example",
   "version": "1.0.0",
   "description": "Express App Example",
-  "author": "Juan Ariza <juan@bitnami.com>",
+  "author": "Juan Ariza <juanariza@vmware.com>",
   "main": "server.js",
   "engines": {
     "node": ">=10"
@@ -11,6 +11,6 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.17.1"
   }
 }
