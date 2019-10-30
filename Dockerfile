@@ -5,8 +5,7 @@ RUN apt-get -y install imagemagick curl software-properties-common gnupg vim ssh
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
 RUN apt-get -y install nodejs
 # Copy application files
-RUN mkdir /app
-COPY package.json server.js /app
+COPY package.json server.js /app/
 # Install NPM dependencies
 RUN npm install --prefix /app
 EXPOSE 80
