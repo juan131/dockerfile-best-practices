@@ -3,7 +3,7 @@ FROM bitnami/minideb
 RUN install_packages imagemagick curl software-properties-common gnupg
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && install_packages nodejs
 # Copy application files
-COPY package.json server.js /app
+COPY package.json server.js /app/
 # Install NPM dependencies
 RUN npm install --prefix /app
 EXPOSE 80
