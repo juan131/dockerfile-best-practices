@@ -1,6 +1,6 @@
 FROM bitnami/node:10-prod
 # Copy application files
-COPY package.json server.js /app
+COPY package.json server.js /app/
 # Install NPM dependencies
 RUN npm install --prefix /app
 EXPOSE 80
