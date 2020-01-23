@@ -12,6 +12,6 @@ RUN CGO_ENABLED=0 go build -a -installsuffix cgo -ldflags "-X main.version=v${VE
 
 FROM scratch
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-COPY --from=builder /tiller-proxy /proxy
+COPY --from=builder /go/src/github.com/kubeapps/kubeapps/tiller-proxy /proxy
 EXPOSE 80
 CMD ["/proxy"]
