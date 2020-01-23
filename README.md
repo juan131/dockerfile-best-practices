@@ -1,58 +1,37 @@
 # Best Practices writing a Dockerfile
 
-This repository is a guide with a set of good practices when writting Dockerfiles.
+Use multi-stage builds to separate build and runtime environments. This approach is extremely effective when building images for compiled applications.
 
-Using a **Node.js** application as example, this guide will be a journey from a very basic Dockerfile to make it production ready, describing some of the best practices and common pitfalls that you are likely to encounter when developing Dockerfiles.
+Let's see how we cam improve an image such as the one below that builds [Kubeapps Tiller Proxy](https://github.com/kubeapps/kubeapps/tree/master/cmd/tiller-proxy), one of the core components of [Kubeapps](http://kubeapps.io/):
 
-## Before we start...
+```Dockerfile
+ARG VERSION
 
-On [this blog post](https://engineering.bitnami.com/articles/best-practices-writing-a-dockerfile.html) you'll find detailed information about each of the steps we'll do to improve the Dockerfile. Please use it to follow this tutorial.
+FROM bitnami/minideb:stretch
+RUN install_packages ca-certificates curl git
+RUN curl https://dl.google.com/go/go1.13.5.linux-amd64.tar.gz | tar -xzf - -C /usr/local
+ENV PATH="/usr/local/go/bin:$PATH" CGO_ENABLED=0
+RUN go get -u github.com/golang/glog && go get -u github.com/kubeapps/kubeapps/cmd/tiller-proxy
+RUN go build -a -installsuffix cgo -ldflags "-X main.version=$VERSION" github.com/kubeapps/kubeapps/cmd/tiller-proxy
 
-### Enable BuilKit
-
-Use [BuildKit](https://github.com/moby/buildkit) to build your Docker images. It can be enabled on two different ways:
-
-- Exporting the `DOCKER_BUILDKIT` environment variable:
-
-```bash
-$ export DOCKER_BUILDKIT=1
+EXPOSE 80
+CMD ["/tiller-proxy"]
 ```
 
-> TIP: add it to your ~/.bashrc file
+### Multi Stage approach
 
-- [Configuring the Docker Daemon](https://docs.docker.com/config/daemon/#configure-the-docker-daemon) to add the **Buildkit** feature:
+We can improve the final image by applying the changes below:
 
-```json
-{
-  "features": {
-    "buildkit": true
-  }
-}
+```diff
+- ROM bitnami/minideb:stretch
++ FROM bitnami/minideb:stretch AS builder
+...
++ FROM scratch
++ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
++ COPY --from=builder /tiller-proxy /proxy
++
+- CMD ["/tiller-proxy"]
++ CMD ["/proxy"]
 ```
 
-### Install a Linter for Dockerfiles on your IDE
-
-A Linter helps you to detect syntax errors on your Dockerfiles and provides you suggestions based on common practices. 
-
-There are plugins that provide these functionalities for almost every IDE. Here you have some suggestions:
-
-- Atom: [linter-docker](https://github.com/AtomLinter/linter-docker)
-- Eclipse: [Docker Editor](https://marketplace.eclipse.org/content/docker-editor)
-- Visual Studio: [Docker Linter](https://marketplace.visualstudio.com/items?itemName=henriiik.docker-linter)
-
-## How to use this tutorial
-
-Starting from the 'master' branch, you'll find a branch with the files to use on each step of the tutorial.
-
-It's only necessary to switch (checkout) to the proper branch. The available branches are:
-
-- [1-cache-improvements](https://github.com/juan131/dockerfile-best-practices/tree/1-cache-improvements)
-- [2-unused-dependencies](https://github.com/juan131/dockerfile-best-practices/tree/2-unused-dependencies)
-- [3-minideb](https://github.com/juan131/dockerfile-best-practices/tree/3-minideb)
-- [4-maintained-images](https://github.com/juan131/dockerfile-best-practices/tree/4-maintained-images)
-- [5-multi-stage](https://github.com/juan131/dockerfile-best-practices/tree/5-multi-stage)
-- [6-non-root](https://github.com/juan131/dockerfile-best-practices/tree/6-non-root)
-- [7-workdir](https://github.com/juan131/dockerfile-best-practices/tree/7-workdir)
-- [8-mounted-configuration](https://github.com/juan131/dockerfile-best-practices/tree/8-mounted-configuration)
-- [9-logs](https://github.com/juan131/dockerfile-best-practices/tree/9-logs)
-- [10-entrypoint](https://github.com/juan131/dockerfile-best-practices/tree/10-entrypoint)
+As we can see, the final image uses scratch (which indicates that the next command in the Dockerfile is the first filesystem layer in the image) and it contains only what we need: the binary and the SSL certificates.
