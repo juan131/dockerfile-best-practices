@@ -1,0 +1,29 @@
+ARG VERSION
+
+FROM bitnami/minideb:stretch AS builder
+RUN install_packages ca-certificates curl git
+ENV GOLANG_VERSION="1.13.5" \
+    GOPATH="/go" \
+    PATH="/usr/local/go/bin:/go/bin:${PATH}"
+RUN curl https://dl.google.com/go/go${GOLANG_VERSION}.linux-amd64.tar.gz | tar -xzf - -C /usr/local
+WORKDIR /go/src/github.com/kubeapps/kubeapps
+RUN git clone --recurse-submodules https://github.com/kubeapps/kubeapps .
+RUN CGO_ENABLED=0 go build -a -installsuffix cgo -ldflags "-X main.version=v${VERSION}" ./cmd/tiller-proxy
+
+FROM scratch AS target-scratch
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=builder /go/src/github.com/kubeapps/kubeapps/tiller-proxy /proxy
+EXPOSE 80
+CMD ["/proxy"]
+
+FROM bitnami/minideb:stretch AS target-debian
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=builder /go/src/github.com/kubeapps/kubeapps/tiller-proxy /proxy
+EXPOSE 80
+CMD ["/proxy"]
+
+FROM oraclelinux:7-slim AS target-oracle
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=builder /go/src/github.com/kubeapps/kubeapps/tiller-proxy /proxy
+EXPOSE 80
+CMD ["/proxy"]
