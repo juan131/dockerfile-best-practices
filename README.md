@@ -44,7 +44,7 @@ If any build steps change the data within the volume after it has been declared,
 
 ```Dockerfile
 VOLUME /data
-RUN cat "Hello world!" /data/hello-world.txt # Warning: No 'hello-world.txt' file will be created!
+RUN cat "Hello world!" > /data/hello-world.txt # Warning: No 'hello-world.txt' file will be created!
 ```
 
 When mounting a volume on a parent directory, that volume won't persist the data inside the mount point declared in the VOLUME directive. In this example the volume `my_data` won't persit data at `/foo/bar`:
