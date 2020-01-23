@@ -8,7 +8,6 @@ Redirect the apps' logs to stdout:
 
 ```diff
 ...
-VOLUME /settings
 + RUN ln -sf /dev/stdout /var/log/app.log
 RUN useradd -r -u 1001 -g root nonroot
 ...
