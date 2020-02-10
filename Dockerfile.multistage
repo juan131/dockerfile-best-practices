@@ -1,6 +1,6 @@
 ARG VERSION
 
-FROM bitnami/minideb:stretch AS builder
+FROM bitnami/minideb:buster AS builder
 RUN install_packages ca-certificates curl git
 ENV GOLANG_VERSION="1.13.5" \
     GOPATH="/go" \

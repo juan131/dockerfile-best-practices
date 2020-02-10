@@ -7,7 +7,7 @@ Let's see how we cam improve an image such as the one below that builds [Kubeapp
 ```Dockerfile
 ARG VERSION
 
-FROM bitnami/minideb:stretch
+FROM bitnami/minideb:buster
 RUN install_packages ca-certificates curl git
 ENV GOLANG_VERSION="1.13.5" \
     GOPATH="/go" \
@@ -26,8 +26,8 @@ CMD ["/tiller-proxy"]
 We can improve the final image by applying the changes below:
 
 ```diff
-- ROM bitnami/minideb:stretch
-+ FROM bitnami/minideb:stretch AS builder
+- ROM bitnami/minideb:buster
++ FROM bitnami/minideb:buster AS builder
 ...
 + FROM scratch
 + COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
