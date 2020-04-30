@@ -1,10 +1,10 @@
 # Best Practices writing a Dockerfile
 
-Use non-root approach to enforce the container security
+Use non-root approach to enforce the container security!
 
-### Main changes
+## Main changes
 
-Change the default user from `root` to `nonroot`:
+Change the default user from `root` to `nonroot` (this user should belong to the `root` group to be compatible with arbitrary UIDs):
 
 ```diff
 ...
@@ -38,7 +38,7 @@ const serverHost = '127.0.0.1';
 ...
 ```
 
-Give permissions to the `nonroot` user in the `/var/log/` directory:
+Give permissions to the group in the `/var/log/` directory (`nonroot` will be able to write since it belongs to the `root` group):
 
 ```diff
 ...
@@ -48,6 +48,6 @@ USER nonroot
 ...
 ```
 
-### Next step
+## Next step
 
 - [7-workdir](https://github.com/juan131/dockerfile-best-practices/tree/7-workdir)
