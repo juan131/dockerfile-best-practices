@@ -2,7 +2,7 @@
 
 Define an entrypoint
 
-### Main changes
+## Main changes
 
 Define entrypoint and use the `CMD` instruction to specify the arguments/flags of the command:
 
