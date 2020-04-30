@@ -1,8 +1,13 @@
 # Best Practices writing a Dockerfile
 
-Avoid packaging dependencies you don't need
+Avoid packaging dependencies you don't need!
 
-### Main changes
+There two reasons to do so:
+
+- The lower number of dependencies you package, the less likely to include components that are affected by known vulnerabilities.
+- Reducing the container size.
+
+## Main changes
 
 Remove debugging tools and add the flag `--no-install-recommends`:
 
@@ -43,6 +48,6 @@ RUN apt-get update && apt-get -y install --no-install-recommends imagemagick cur
 ...
 ```
 
-### Next step
+## Next step
 
 - [3-minideb](https://github.com/juan131/dockerfile-best-practices/tree/3-minideb)
