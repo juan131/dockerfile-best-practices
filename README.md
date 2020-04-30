@@ -33,6 +33,10 @@ Be more specific about the files we copy:
 ...
 ```
 
+## Grouping commands under the same layer
+
+Check [this example](https://github.com/juan131/dockerfile-best-practices/tree/grouping-layers) to understand how important to group commands can be.
+
 ## Next step
 
 - [2-unused-dependencies](https://github.com/juan131/dockerfile-best-practices/tree/2-unused-dependencies)
