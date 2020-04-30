@@ -1,10 +1,12 @@
 # Best Practices writing a Dockerfile
 
-Use multi-stage builds to separate build and runtime environments
+Use multi-stage builds to separate build and runtime environments!
 
-### Main changes
+Note: check [tiller-proxy](https://github.com/juan131/dockerfile-best-practices/tree/tiller-proxy) example for a better example.
 
-Split the build process on different stages:
+## Main changes
+
+Split the build process into different stages:
 
 ```diff
 - FROM bitnami/node:10-prod
@@ -23,4 +25,3 @@ RUN npm install --prefix /app
 ### Next step
 
 - [6-non-root](https://github.com/juan131/dockerfile-best-practices/tree/6-non-root)
-
