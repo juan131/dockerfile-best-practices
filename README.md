@@ -1,8 +1,8 @@
 # Best Practices writing a Dockerfile
 
-Reuse maintained images when possible
+Reuse maintained images when possible!
 
-### Main changes
+## Main changes
 
 Use the `bitnami/node` image as base image:
 
@@ -16,7 +16,7 @@ Use the `bitnami/node` image as base image:
 ...
 ```
 
-Use the tag `10-prod` to ensure we the minimal packages:
+Use the tag `10-prod` to ensure minimal packages are shipped:
 
 ```diff
 - FROM bitnami/node
@@ -25,6 +25,6 @@ Use the tag `10-prod` to ensure we the minimal packages:
 ...
 ```
 
-### Next step
+## Next step
 
 - [5-multi-stage](https://github.com/juan131/dockerfile-best-practices/tree/5-multi-stage)
