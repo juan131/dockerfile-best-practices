@@ -2,7 +2,7 @@
 
 Use Minideb, a minimalist Debian-based image built specifically to be used as a base image for containers.
 
-### Main changes
+## Main changes
 
 Use Minideb:
 
@@ -26,7 +26,6 @@ Replace the `apt-get` instructions with `install_packages`:
 ...
 ```
 
-### Next step
+## Next step
 
 - [4-maintained-images](https://github.com/juan131/dockerfile-best-practices/tree/4-maintained-images)
-
