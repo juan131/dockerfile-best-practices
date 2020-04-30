@@ -2,7 +2,7 @@
 
 Use multi-stage builds to separate build and runtime environments. This approach is extremely effective when building images for compiled applications.
 
-Let's see how we cam improve an image such as the one below that builds [Kubeapps Tiller Proxy](https://github.com/kubeapps/kubeapps/tree/master/cmd/tiller-proxy), one of the core components of [Kubeapps](http://kubeapps.io/):
+Let's see how we can improve an image such as the one below that builds [Kubeapps Tiller Proxy](https://github.com/kubeapps/kubeapps/tree/master/cmd/tiller-proxy), one of the core components of [Kubeapps](http://kubeapps.io/):
 
 ```Dockerfile
 ARG VERSION
@@ -21,7 +21,7 @@ EXPOSE 80
 CMD ["/tiller-proxy"]
 ```
 
-### Multi Stage approach
+## Multi Stage approach
 
 We can improve the final image by applying the changes below:
 
