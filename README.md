@@ -1,8 +1,10 @@
 # Best Practices writing a Dockerfile
 
-Take advantage of the build cache
+Take advantage of the build cache!
 
-### Main changes
+We can reduce the build time by reusing existing layers. To do so, layers that aren't likely to change should go first.
+
+## Main changes
 
 Switch the order so we avoid installing the system packages:
 
@@ -31,6 +33,6 @@ Be more specific about the files we copy:
 ...
 ```
 
-### Next step
+## Next step
 
 - [2-unused-dependencies](https://github.com/juan131/dockerfile-best-practices/tree/2-unused-dependencies)
