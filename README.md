@@ -1,8 +1,8 @@
 # Best Practices writing a Dockerfile
 
-Set the WORKDIR instruction
+Set the WORKDIR instruction to avoid surprises!
 
-### Main changes
+## Main changes
 
 Adapt the working directory:
 
@@ -15,6 +15,6 @@ USER nonroot
 ...
 ```
 
-### Next step
+## Next step
 
 - [8-mounted-configuration](https://github.com/juan131/dockerfile-best-practices/tree/8-mounted-configuration)
