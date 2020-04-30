@@ -2,7 +2,7 @@
 
 Mount the application's configuration and the VOLUME instruction
 
-### Main changes
+## Main changes
 
 Modify the application so the hostname and port to be used depends on a configuration file:
 
@@ -28,7 +28,7 @@ $ mkdir settings && cat > settings/settings.json<<'EOF'
 EOF
 ```
 
-### The VOLUME instruction
+## The VOLUME instruction
 
 The VOLUME directive is described as follows:
 
@@ -67,10 +67,9 @@ volumes:
 
 Based on this information, these are the standards we recommend to follow when using this directive:
 
-- Every Docker image **must** use the VOLUME directive in the *Dockerfile* to persist any data created inside the container. Please note that we shouldn't use this directive for volumes used by users to mount its own data (e.g. an user who's using the NGINX container and mounts the static files of an app).
+- Every Docker image **must** use the VOLUME directive in the *Dockerfile* to persist any data created inside the container. Please note that we shouldn't use this directive for volumes used by users to mount its own files (e.g. an user who's using the NGINX container and mounts the static files of a website).
 - Every *docker-compose.yml* must mount the volumes in the same mountPath declared in the VOLUME directive (e.g. if PostgreSQL container declares VOLUME `/bitnami/postgresql` every *docker-compose.yml* should mount the volumes at that path).
 
-
-### Next step
+## Next step
 
 - [9-logs](https://github.com/juan131/dockerfile-best-practices/tree/9-logs)
