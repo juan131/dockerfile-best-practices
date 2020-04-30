@@ -1,12 +1,8 @@
-FROM debian
-# Copy application files
-COPY . /app
-# Install required system packages
-RUN apt-get update
-RUN apt-get -y install imagemagick curl software-properties-common gnupg vim ssh
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
-RUN apt-get -y install nodejs
-# Install NPM dependencies
-RUN npm install --prefix /app
-EXPOSE 80
-CMD ["npm", "start", "--prefix", "app"]
+FROM bitnami/minideb:buster
+
+RUN install_packages ca-certificates curl
+RUN curl -L --output /usr/local/bin/kubectl "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+RUN chmod +x /usr/local/bin/kubectl
+
+ENTRYPOINT [ "kubectl" ]
+CMD [ "--help" ]

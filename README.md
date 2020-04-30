@@ -1,62 +1,64 @@
-# Best Practices writing a Dockerfile
+# Grouping commands
 
-This repository is a guide with a set of good practices when writting Dockerfiles.
+Grouping commands can be very important to reduce the size of your container(s) due to how the layers work.
 
-Using a **Node.js** application as example, this guide will be a journey from a very basic Dockerfile to make it production ready, describing some of the best practices and common pitfalls that you are likely to encounter when developing Dockerfiles.
+Each layer contains everything that changed in the filesystem based on its previous layer. So comparing two consecutive layers, we should obtain a delta that describes what changed in the filesystem.
 
-## Before we start
+Let's see how we cam improve an image such as the one below that ships [kubectl](https://github.com/kubernetes/kubectl):
 
-On [this blog post](https://engineering.bitnami.com/articles/best-practices-writing-a-dockerfile.html) you'll find detailed information about each of the steps we'll do to improve the Dockerfile. Please use it to follow this tutorial.
+```Dockerfile
+FROM bitnami/minideb:buster
 
-> Note: the blog post was published on February 2019. There are corrections and updates only available on this GitHub repository.
+RUN install_packages ca-certificates curl
+RUN curl -L --output /usr/local/bin/kubectl "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+RUN chmod +x /usr/local/bin/kubectl
 
-### Enable BuilKit
-
-Use [BuildKit](https://github.com/moby/buildkit) to build your Docker images. It can improve the performance when building Docker images.
-
-It can be enabled on two different ways:
-
-- Exporting the `DOCKER_BUILDKIT` environment variable:
-
-```bash
-export DOCKER_BUILDKIT=1
+ENTRYPOINT [ "kubectl" ]
+CMD [ "--help" ]
 ```
 
-> TIP: add it to your ~/.bashrc file
+If we build a `kubectl` image based on that Dockerfile, and we analyze its layers:
 
-- [Configuring the Docker Daemon](https://docs.docker.com/config/daemon/#configure-the-docker-daemon) to add the **Buildkit** feature:
-
-```json
-{
-  "features": {
-    "buildkit": true
-  }
-}
+```console
+$ docker history kubectl
+IMAGE               CREATED              CREATED BY                                      SIZE                COMMENT
+0d0c17dc554f        About a minute ago   CMD ["--help"]                                  0B                  buildkit.dockerfile.v0
+<missing>           About a minute ago   ENTRYPOINT ["kubectl"]                          0B                  buildkit.dockerfile.v0
+<missing>           About a minute ago   RUN /bin/sh -c chmod +x /usr/local/bin/kubec…   44MB                buildkit.dockerfile.v0
+<missing>           About a minute ago   RUN /bin/sh -c curl -L --output /usr/local/b…   44MB                buildkit.dockerfile.v0
+<missing>           About a minute ago   RUN /bin/sh -c install_packages ca-certifica…   12.8MB              buildkit.dockerfile.v0
+<missing>           3 weeks ago                                                          67.5MB              from Bitnami with love
+$ docker images
+REPOSITORY                           TAG                 IMAGE ID            CREATED             SIZE
+kubectl                              latest              0d0c17dc554f        2 minutes ago       168MB
 ```
 
-### Install a Linter for Dockerfiles on your IDE
+We can see that there are two layers adding 44MB to the image size. However, one of these layers it's just changing the binary permissions, we're not adding new content to the image!!!
+This is due to how the layers work. We can improve the final image by applying the change below:
 
-A Linter helps you to detect syntax errors on your Dockerfiles and provides you suggestions based on common practices.
+```diff
+FROM bitnami/minideb:buster
 
-There are plugins that provide these functionalities for almost every IDE. Here you have some suggestions:
+- RUN curl -L --output /usr/local/bin/kubectl "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+- RUN chmod +x /usr/local/bin/kubectl
++ RUN curl -L --output /usr/local/bin/kubectl "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl" && \
+      chmod +x /usr/local/bin/kubectl
 
-- Atom: [linter-docker](https://github.com/AtomLinter/linter-docker)
-- Eclipse: [Docker Editor](https://marketplace.eclipse.org/content/docker-editor)
-- Visual Studio: [Docker for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)
+ENTRYPOINT [ "kubectl" ]
+CMD [ "--help" ]
+```
 
-## How to use this tutorial
+If we analyze the layers again...
 
-Starting from the 'master' branch, you'll find a branch with the files to use on each step of the tutorial.
-
-It's only necessary to switch (checkout) to the proper branch. The available branches are:
-
-- [1-cache-improvements](https://github.com/juan131/dockerfile-best-practices/tree/1-cache-improvements)
-- [2-unused-dependencies](https://github.com/juan131/dockerfile-best-practices/tree/2-unused-dependencies)
-- [3-minideb](https://github.com/juan131/dockerfile-best-practices/tree/3-minideb)
-- [4-maintained-images](https://github.com/juan131/dockerfile-best-practices/tree/4-maintained-images)
-- [5-multi-stage](https://github.com/juan131/dockerfile-best-practices/tree/5-multi-stage)
-- [6-non-root](https://github.com/juan131/dockerfile-best-practices/tree/6-non-root)
-- [7-workdir](https://github.com/juan131/dockerfile-best-practices/tree/7-workdir)
-- [8-mounted-configuration](https://github.com/juan131/dockerfile-best-practices/tree/8-mounted-configuration)
-- [9-logs](https://github.com/juan131/dockerfile-best-practices/tree/9-logs)
-- [10-entrypoint](https://github.com/juan131/dockerfile-best-practices/tree/10-entrypoint)
+```console
+$ docker history kubectl
+IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
+ff6fcfec2e48        1 second ago        CMD ["--help"]                                  0B                  buildkit.dockerfile.v0
+<missing>           1 second ago        ENTRYPOINT ["kubectl"]                          0B                  buildkit.dockerfile.v0
+<missing>           1 second ago        RUN /bin/sh -c curl -L --output /usr/local/b…   44MB                buildkit.dockerfile.v0
+<missing>           6 minutes ago       RUN /bin/sh -c install_packages ca-certifica…   12.8MB              buildkit.dockerfile.v0
+<missing>           3 weeks ago                                                         67.5MB              from Bitnami with love
+$ docker images
+REPOSITORY                           TAG                 IMAGE ID            CREATED             SIZE
+kubectl                              latest              ff6fcfec2e48        1 second ago        124MB
+```
