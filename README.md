@@ -2,7 +2,7 @@
 
 Use multi-stage builds to separate build and runtime environments!
 
-Note: check [tiller-proxy](https://github.com/juan131/dockerfile-best-practices/tree/tiller-proxy) example for a better example.
+Note: check [asset-syncer](https://github.com/juan131/dockerfile-best-practices/tree/asset-syncer) example for a better example.
 
 ## Main changes
 
