@@ -8,10 +8,10 @@ ENV GOLANG_VERSION="1.13.5" \
 RUN curl https://dl.google.com/go/go${GOLANG_VERSION}.linux-amd64.tar.gz | tar -xzf - -C /usr/local
 WORKDIR /go/src/github.com/kubeapps/kubeapps
 RUN git clone --recurse-submodules https://github.com/kubeapps/kubeapps .
-RUN CGO_ENABLED=0 go build -a -installsuffix cgo -ldflags "-X main.version=v${VERSION}" ./cmd/tiller-proxy
+RUN CGO_ENABLED=0 go build -a -installsuffix cgo -ldflags "-X main.version=v${VERSION}" ./cmd/asset-syncer
 
 FROM scratch
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-COPY --from=builder /go/src/github.com/kubeapps/kubeapps/tiller-proxy /proxy
+COPY --from=builder /go/src/github.com/kubeapps/kubeapps/asset-syncer /asset-syncer
 EXPOSE 80
-CMD ["/proxy"]
+CMD ["/asset-syncer"]
