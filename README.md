@@ -20,8 +20,8 @@ Replace the `apt-get` instructions with `install_packages`:
 # Install required system packages
 - RUN apt-get update && apt-get -y install --no-install-recommends imagemagick curl software-properties-common gnupg
 + RUN install_packages imagemagick curl software-properties-common gnupg
-- RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && apt-get -y install --no-install-recommends nodejs && rm -rf /var/lib/apt/lists/*
-+ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && install_packages nodejs
+- RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && apt-get -y install --no-install-recommends nodejs && rm -rf /var/lib/apt/lists/*
++ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && install_packages nodejs
 # Copy application files
 ...
 ```
