@@ -1,4 +1,4 @@
-FROM bitnami/node:10-prod
+FROM bitnami/node:12-prod
 # Copy application files
 COPY package.json server.js /app/
 # Install NPM dependencies
