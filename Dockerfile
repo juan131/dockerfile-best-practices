@@ -1,8 +1,8 @@
-FROM bitnami/node:10 AS builder
+FROM bitnami/node:12 AS builder
 COPY package.json server.js /app/
 RUN npm install --prefix /app
 
-FROM bitnami/node:10-prod
+FROM bitnami/node:12-prod
 COPY --from=builder /app/package.json /app/server.js /app/
 COPY --from=builder /app/node_modules /app/node_modules
 EXPOSE 8080
